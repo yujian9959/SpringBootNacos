@@ -1,0 +1,27 @@
+server:
+  port: 8081
+#
+spring:
+  group: DEFAULT_GROUP
+  application:
+    name: nacos-provider
+  cloud:
+    nacos:
+      server-addr:  127.0.0.1:8848
+      config:
+        prefix: ${spring.application.name} # prefix 指向的是配置文件的 Data Id，一般和应用名称保持一致
+        group: ${spring.group}
+        namespace: 860fab85-7e4f-4520-ba8a-28a8a60221ec
+        extension-configs: # 扩展配置，用于支持 properties 格式的配置
+          - data-id: ${spring.application.name}-${spring.profiles.active}-data1.properties
+            group: ${spring.group}
+            refresh: true # refresh = true 代表开启该配置文件自动刷新，默认是关闭的，类似@RefreshScope
+          - data-id: ${spring.application.name}-${spring.profiles.active}-data2.properties
+            group: ${spring.group}
+            refresh: true
+      discovery:
+        namespace: 860fab85-7e4f-4520-ba8a-28a8a60221ec
+        group: ${spring.group}
+  profiles:
+    active: @env@
+
